@@ -1,0 +1,99 @@
+#define sel1 38
+#define sel2 39
+#define rst_ 40
+#define clk 12
+
+int alpha,theta,alphaA,thetaT,alphaPre,thetaPre;
+byte alpha1,alpha2,theta1,theta2;
+float p,K1,K2,K3,K4,_time,output;
+
+void setup()
+{
+Serial.begin(9600);
+
+pinMode(sel1, OUTPUT);
+pinMode(sel2, OUTPUT);
+pinMode(rst_, OUTPUT);
+pinMode(clk, OUTPUT);
+pinMode(8, OUTPUT);
+pinMode(9, OUTPUT);
+
+TCCR1B=0x01;
+analogWrite(clk, 127);
+digitalWrite(rst_, LOW);
+delay(1000);
+digitalWrite(rst_, HIGH);
+DDRC=0b00000000;
+
+p = 0.03338*2;
+K1 = 5;
+K2 = 100;
+
+K3 = 1.15;
+K4 = 3.5;
+}
+
+void control(float op)
+{
+if(op >= 0)
+{
+if(op > 255)
+{
+digitalWrite(8, HIGH);
+digitalWrite(9, LOW);
+}
+else
+{
+analogWrite(8, op);
+digitalWrite(9, LOW);
+}
+}
+else
+{
+if(abs(op) > 255)
+{
+digitalWrite(9, HIGH);
+digitalWrite(8, LOW);
+}
+
+else
+{
+analogWrite(9, (-1*op));
+digitalWrite(8, LOW);
+}
+}
+}
+
+void loop()
+{
+_time=millis();
+
+digitalWrite(sel1, HIGH);
+digitalWrite(sel2, LOW);
+alpha1=PINC;
+theta1=PINA;
+digitalWrite(sel1, LOW);
+digitalWrite(sel2, LOW);
+
+alpha2=PINC;
+theta2=PINA;
+
+alpha=-1*word(alpha2,alpha1);
+theta=1*word(theta2,theta1);
+
+output = -p*(K1*theta + K2*(alpha-1000) + K3*(theta-thetaPre)*180 + K4*(alpha-
+alphaPre)*210);
+
+alphaPre=alpha;
+thetaPre=theta;
+control(output);
+
+alphaA=map(alpha,0,2000,0,360);
+thetaT=map(theta,-2000,2000,-360,360);
+
+Serial.print(alphaA-180);
+Serial.print("\t");
+Serial.print(thetaT);
+Serial.print("\t");
+Serial.println(_time);
+}

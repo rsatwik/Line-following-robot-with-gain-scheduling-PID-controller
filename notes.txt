@@ -1,0 +1,18 @@
+https://www.robotshop.com/community/forum/t/pid-tutorials-for-line-following/13164
+
+
+
+https://youtu.be/AMBWV_HGYj4
+target value to track is 35 percent of the light intensity (corresponding to half black and half white)
+error = target - curr_value;
+error_p = error * Kp;
+cum_error += error;
+error_i = Ki * cum_error;
+error_d = Kd*(error - errorprev);
+error_prev = error;
+
+https://youtu.be/4Y7zG48uHRo
+Theory of PID in line following
+
+http://robotresearchlab.com/2019/02/16/pid-line-follower-tuning/ 
+PID Line Follower Tuning - Experimental

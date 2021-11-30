@@ -1,0 +1,21 @@
+Spark V robot is based on ATMEGA16A microcontroller. 
+
+Robot has 2x16 alphanumeric LCD
+
+Motors are controlled by L293D motor driver. 
+
+Robot gives top speed of 15cm to 20cm per second depending on the model.  
+
+USB Communication using FT232 USB to Serial Converter
+
+ATMEGA16 has 2 eight bit timers (timer 0 and 
+timer 2) and 1 sixteen bit timer ( timer1). 
+
+Velocity control – Timer 1 is used to gene
+rate PWM for robot’s 
+velocity control.  
+
+The Timer/Counter can be clocked by an internal or an external clock source. 
+The clock source  is  selected  by  the  Clock  Select  logic
+which  is  controlled  by  the  Clock  Select  
+CS12:0 bits located in the Timer/Counter control Register B (TCCR1B).  
